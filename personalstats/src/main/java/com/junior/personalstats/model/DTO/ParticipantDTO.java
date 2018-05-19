@@ -1,4 +1,4 @@
-package com.junior.personalstats.model;
+package com.junior.personalstats.model.DTO;
 
 import java.io.Serializable;
 
@@ -16,6 +16,9 @@ public class ParticipantDTO implements Serializable{
 	
 	@JsonProperty("stats")
 	private StatsDTO stats;
+	
+	@JsonProperty("participantId")
+	private Integer nuParticipant;
 
 	/* 
 	 * GET AND SETS
@@ -43,5 +46,14 @@ public class ParticipantDTO implements Serializable{
 	public void setNuTeam(Integer nuTeam) {
 		this.nuTeam = nuTeam;
 	}
+
+	public Integer getNuParticipant() {
+		return nuParticipant;
+	}
+
+	public void setNuParticipant(Integer nuParticipant) {
+		this.nuParticipant = nuParticipant;
+	}
+	
 	
 }

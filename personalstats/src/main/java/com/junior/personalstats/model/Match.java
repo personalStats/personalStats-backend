@@ -1,20 +1,24 @@
 package com.junior.personalstats.model;
 
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.math.BigInteger;
+import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.junior.personalstats.model.DTO.MatchDTO;
+import com.junior.personalstats.model.DTO.ParticipantDTO;
+import com.junior.personalstats.model.DTO.TeamDTO;
 
 @Document(collection = "match")
 public class Match {
 
 	@Id
-	private Long cdMatch;
+	private BigInteger cdMatch;
 	
 	private Integer nuGameId;
 	private Integer nuChampion;
-	private Timestamp dtMatch;
+	private Date dtMatch;
 	
 	private Integer nuSeason;
 	private boolean isWin;
@@ -32,6 +36,7 @@ public class Match {
 	private Integer nuDmgDealt;
 	private Integer nuVisionScore;
 	private Integer nuTeam;
+	private Integer nuParticipant;
 	
 	public Match getMatchFromMatchDTO(MatchDTO matchDTO) {
 		this.nuGameId = matchDTO.getMatchDetailsDTO().getCdMatch();
@@ -51,6 +56,7 @@ public class Match {
 				this.nuDmgDealt = participantDTO.getStats().getNuDmgDealt();
 				this.nuVisionScore = participantDTO.getStats().getNuVisionScore();
 				this.nuTeam = participantDTO.getNuTeam();
+				this.nuParticipant = participantDTO.getNuParticipant();
 			}
 		}
 		for (TeamDTO teamDTO : matchDTO.getMatchDetailsDTO().getTeams()) {
@@ -68,11 +74,11 @@ public class Match {
 	/*
 	 * GET AND SET
 	 */
-	public Long getCdMatch() {
+	public BigInteger  getCdMatch() {
 		return cdMatch;
 	}
 
-	public void setCdMatch(Long cdMatch) {
+	public void setCdMatch(BigInteger cdMatch) {
 		this.cdMatch = cdMatch;
 	}
 
@@ -212,11 +218,11 @@ public class Match {
 		this.nuChampion = nuChampion;
 	}
 
-	public Timestamp getDtMatch() {
+	public Date getDtMatch() {
 		return dtMatch;
 	}
 
-	public void setDtMatch(Timestamp dtMatch) {
+	public void setDtMatch(Date dtMatch) {
 		this.dtMatch = dtMatch;
 	}
 
@@ -227,5 +233,14 @@ public class Match {
 	public void setNuTeam(Integer nuTeam) {
 		this.nuTeam = nuTeam;
 	}
+
+	public Integer getNuParticipant() {
+		return nuParticipant;
+	}
+
+	public void setNuParticipant(Integer nuParticipant) {
+		this.nuParticipant = nuParticipant;
+	}
+	
 
 }

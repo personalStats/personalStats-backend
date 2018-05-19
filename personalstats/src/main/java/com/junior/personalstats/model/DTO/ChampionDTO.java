@@ -1,4 +1,4 @@
-package com.junior.personalstats.model;
+package com.junior.personalstats.model.DTO;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

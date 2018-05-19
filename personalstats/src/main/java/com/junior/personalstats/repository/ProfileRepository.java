@@ -1,9 +1,11 @@
 package com.junior.personalstats.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import java.math.BigInteger;
 
-import com.junior.personalstats.model.ProfileDTO;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface ProfileRepository extends CrudRepository<ProfileDTO, Integer>{
+import com.junior.personalstats.model.Profile;
+
+public interface ProfileRepository extends MongoRepository<Profile, BigInteger>{
 
 }

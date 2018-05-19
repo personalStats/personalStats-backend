@@ -1,4 +1,4 @@
-package com.junior.personalstats.model;
+package com.junior.personalstats.model.DTO;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.data.annotation.Transient;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.junior.personalstats.model.Profile;
 
 public class MatchDetailsDTO {
 
@@ -14,7 +15,7 @@ public class MatchDetailsDTO {
 	private Integer cdMatch;
 	
 	private String cdRole;
-	private Timestamp dtMatch;
+	private Date dtMatch;
 
 	@JsonProperty("seasonId")
 	private Integer nuSeason;
@@ -25,7 +26,7 @@ public class MatchDetailsDTO {
 	
 	private Integer nuChampion;
 	
-	private ProfileDTO profile;
+	private Profile profile;
 	
 	@Transient
 	@JsonProperty("teams")
@@ -57,11 +58,11 @@ public class MatchDetailsDTO {
 		this.cdRole = cdRole;
 	}
 
-	public Timestamp getDtMatch() {
+	public Date getDtMatch() {
 		return dtMatch;
 	}
 
-	public void setDtMatch(Timestamp dtMatch) {
+	public void setDtMatch(Date dtMatch) {
 		this.dtMatch = dtMatch;
 	}
 
@@ -89,11 +90,11 @@ public class MatchDetailsDTO {
 		this.isWin = isWin;
 	}
 
-	public ProfileDTO getProfile() {
+	public Profile getProfile() {
 		return profile;
 	}
 
-	public void setProfile(ProfileDTO profile) {
+	public void setProfile(Profile profile) {
 		this.profile = profile;
 	}
 
