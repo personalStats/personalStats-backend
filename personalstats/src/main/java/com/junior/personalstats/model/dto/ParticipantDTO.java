@@ -1,4 +1,4 @@
-package com.junior.personalstats.model.DTO;
+package com.junior.personalstats.model.dto;
 
 import java.io.Serializable;
 
@@ -10,17 +10,26 @@ public class ParticipantDTO implements Serializable{
 
 	@JsonProperty("championId")
 	private Integer nuChampion;
-	
+
 	@JsonProperty("teamId")
 	private Integer nuTeam;
-	
+
 	@JsonProperty("stats")
 	private StatsDTO stats;
-	
+
 	@JsonProperty("participantId")
 	private Integer nuParticipant;
 
-	/* 
+
+	public ParticipantDTO(Integer nuChampion, Integer nuTeam, StatsDTO stats, Integer nuParticipant) {
+		super();
+		this.nuChampion = nuChampion;
+		this.nuTeam = nuTeam;
+		this.stats = stats;
+		this.nuParticipant = nuParticipant;
+	}
+
+	/*
 	 * GET AND SETS
 	 */
 	public Integer getNuChampion() {
@@ -54,6 +63,6 @@ public class ParticipantDTO implements Serializable{
 	public void setNuParticipant(Integer nuParticipant) {
 		this.nuParticipant = nuParticipant;
 	}
-	
-	
+
+
 }

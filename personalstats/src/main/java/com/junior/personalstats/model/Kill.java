@@ -7,7 +7,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.junior.personalstats.model.DTO.MatchPositionDTO;
+import com.junior.personalstats.model.dto.MatchPositionDTO;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,21 +17,23 @@ public class Kill implements Serializable{
 
 	@JsonProperty("killerId")
 	@Getter @Setter private Integer nuChampionKill;
-	
+
 	@JsonProperty("victimId")
 	@Getter @Setter private Integer nuChampionDeath;
-	
+
 	@JsonProperty("assistingParticipantIds")
 	@Getter @Setter private List<Integer> nuChampionAssist;
-	
+
 	@JsonProperty("timestamp")
 	@Getter @Setter private Timestamp dtKill;
-	
+
 	@JsonProperty("position")
 	@Getter @Setter private MatchPositionDTO matchPositionDTO;
 
+	private String type;
+
 	private BigInteger cdMatch;
-	
+
 	private String cdProfile;
 
 	public Integer getNuChampionKill() {
@@ -89,5 +91,15 @@ public class Kill implements Serializable{
 	public void setCdProfile(String cdProfile) {
 		this.cdProfile = cdProfile;
 	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+
 
 }

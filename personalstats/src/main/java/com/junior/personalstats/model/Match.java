@@ -6,9 +6,9 @@ import java.util.Date;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.junior.personalstats.model.DTO.MatchDTO;
-import com.junior.personalstats.model.DTO.ParticipantDTO;
-import com.junior.personalstats.model.DTO.TeamDTO;
+import com.junior.personalstats.model.dto.MatchDTO;
+import com.junior.personalstats.model.dto.ParticipantDTO;
+import com.junior.personalstats.model.dto.TeamDTO;
 
 @Document(collection = "match")
 public class Match {

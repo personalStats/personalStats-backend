@@ -1,4 +1,4 @@
-package com.junior.personalstats.model.DTO;
+package com.junior.personalstats.model.dto;
 
 import java.sql.Timestamp;
 import java.util.Date;

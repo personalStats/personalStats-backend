@@ -1,16 +1,16 @@
-package com.junior.personalstats.model.DTO;
+package com.junior.personalstats.model.dto;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "champion")
 public class ChampionDTO {
-	
+
 	@Id
 	private Integer cdChampion;
 	private String deChampion;
-	
-	/* 
+
+	/*
 	 * GET AND SETS
 	 */
 
@@ -26,7 +26,7 @@ public class ChampionDTO {
 	public void setDeChampion(String deChampion) {
 		this.deChampion = deChampion;
 	}
-	
-	
+
+
 
 }

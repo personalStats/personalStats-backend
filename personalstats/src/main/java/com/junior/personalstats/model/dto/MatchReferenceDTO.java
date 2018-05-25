@@ -1,4 +1,4 @@
-package com.junior.personalstats.model.DTO;
+package com.junior.personalstats.model.dto;
 
 import java.io.Serializable;
 
