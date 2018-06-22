@@ -20,6 +20,18 @@ public enum TypeEnum {
 		this.type = type;
 	}
 
+	public static boolean isKill(String type) {
+		return TypeEnum.KILL.getType().equals(type);
+	}
+
+	public static boolean isDeath(String type) {
+		return TypeEnum.DEATH.getType().equals(type);
+	}
+
+	public static boolean isAssist(String type) {
+		return TypeEnum.ASSIST.getType().equals(type);
+	}
+
 
 
 }

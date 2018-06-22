@@ -15,11 +15,11 @@ public class Match {
 
 	@Id
 	private BigInteger cdMatch;
-	
+
 	private Integer nuGameId;
 	private Integer nuChampion;
 	private Date dtMatch;
-	
+
 	private Integer nuSeason;
 	private boolean isWin;
 	private boolean isFirstKill;
@@ -37,7 +37,7 @@ public class Match {
 	private Integer nuVisionScore;
 	private Integer nuTeam;
 	private Integer nuParticipant;
-	
+
 	public Match getMatchFromMatchDTO(MatchDTO matchDTO) {
 		this.nuGameId = matchDTO.getMatchDetailsDTO().getCdMatch();
 		this.nuChampion = matchDTO.getMatchDetailsDTO().getNuChampion();
@@ -66,11 +66,11 @@ public class Match {
 				this.isFirstTower = teamDTO.isFirstTower();
 			}
 		}
-		
+
 		return this;
-		
+
 	}
-	
+
 	/*
 	 * GET AND SET
 	 */
@@ -241,6 +241,6 @@ public class Match {
 	public void setNuParticipant(Integer nuParticipant) {
 		this.nuParticipant = nuParticipant;
 	}
-	
+
 
 }

@@ -11,6 +11,16 @@ public class ChampionStatisticsDTO implements Serializable {
 	private Integer nuDeaths;
 	private Integer nuAssists;
 
+	public ChampionStatisticsDTO() {
+		//HIDE CONSTRUCTOR
+	}
+
+	public ChampionStatisticsDTO(Integer nuChampion, Integer nuKills) {
+		super();
+		this.nuChampion = nuChampion;
+		this.nuKills = nuKills;
+	}
+
 	/*
 	 * get and set
 	 */

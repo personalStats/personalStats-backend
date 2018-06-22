@@ -8,7 +8,15 @@ public class HeaderStatisticsDTO implements Serializable{
 	private Integer nuDeaths;
 	private Integer nuAssists;
 	private Integer nuGames;
-	
+	private Integer nuDoubleKills;
+	private Integer nuTripleKills;
+	private Integer nuQuadraKills;
+	private Integer nuPentaKills;
+
+	public HeaderStatisticsDTO() {
+		//hide constructor
+	}
+
 	public HeaderStatisticsDTO(Integer nuKills, Integer nuDeaths, Integer nuAssists, Integer nuGames) {
 		this.nuAssists = nuAssists;
 		this.nuKills = nuKills;
@@ -42,6 +50,37 @@ public class HeaderStatisticsDTO implements Serializable{
 	public void setNuGames(Integer nuGames) {
 		this.nuGames = nuGames;
 	}
-	
-	
+
+	public Integer getNuDoubleKills() {
+		return nuDoubleKills;
+	}
+
+	public void setNuDoubleKills(Integer nuDoubleKills) {
+		this.nuDoubleKills = nuDoubleKills;
+	}
+
+	public Integer getNuTripleKills() {
+		return nuTripleKills;
+	}
+
+	public void setNuTripleKills(Integer nuTripleKills) {
+		this.nuTripleKills = nuTripleKills;
+	}
+
+	public Integer getNuQuadraKills() {
+		return nuQuadraKills;
+	}
+
+	public void setNuQuadraKills(Integer nuQuadraKills) {
+		this.nuQuadraKills = nuQuadraKills;
+	}
+
+	public Integer getNuPentaKills() {
+		return nuPentaKills;
+	}
+
+	public void setNuPentaKills(Integer nuPentaKills) {
+		this.nuPentaKills = nuPentaKills;
+	}
+
 }

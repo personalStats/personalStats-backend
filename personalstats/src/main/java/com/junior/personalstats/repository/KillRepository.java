@@ -8,4 +8,5 @@ import com.junior.personalstats.model.Kill;
 
 public interface KillRepository extends MongoRepository<Kill, BigInteger>{
 
+
 }

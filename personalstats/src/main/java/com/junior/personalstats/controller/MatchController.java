@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.env.Environment;
-import org.springframework.data.repository.support.Repositories;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,6 +35,8 @@ import com.junior.personalstats.model.dto.ParticipantDTO;
 import com.junior.personalstats.repository.KillRepository;
 import com.junior.personalstats.repository.MatchRepository;
 import com.junior.personalstats.repository.ProfileRepository;
+import com.junior.personalstats.repository.impl.KillServiceImpl;
+import com.junior.personalstats.repository.impl.MatchServiceImpl;
 
 @RestController
 public class MatchController {
@@ -58,8 +60,8 @@ public class MatchController {
 
 		String nuKey = env.getProperty("personalStats.nuKey");
 
-		List<MatchDTO> matchList = new ArrayList<MatchDTO>();
-		List<Match> matchListConverted = new ArrayList<Match>();
+		List<MatchDTO> matchList = new ArrayList<>();
+		List<Match> matchListConverted = new ArrayList<>();
 		ObjectMapper mapper = new ObjectMapper();
 
 		String urlListaMatch = String.format("https://br1.api.riotgames.com/lol/match/v3/matchlists/by-account/%s?beginIndex=1&season=11&endIndex=5&api_key=%s",profile.getNuAccount(),nuKey);
@@ -114,7 +116,7 @@ public class MatchController {
 	private void saveKill(ObjectMapper mapper, JsonNode jsonEvento, Profile profile, Match match, List<ParticipantDTO> listParticipants) throws JsonProcessingException {
 		Kill kill = mapper.treeToValue(jsonEvento, Kill.class);
 		kill.setCdProfile(profile.getCdProfile());
-		kill.setCdMatch(match.getCdMatch());
+		kill.setNuGameId(match.getNuGameId());
 		kill.setNuChampionKill(getChampionFromParticipant(listParticipants, kill.getNuChampionKill()));
 		kill.setNuChampionDeath(getChampionFromParticipant(listParticipants, kill.getNuChampionDeath()));
 		kill.setNuChampionAssist(getChampionFromParticipant(listParticipants, kill.getNuChampionAssist()));
@@ -156,32 +158,46 @@ public class MatchController {
 	}
 
 	@CrossOrigin(origins = "http://localhost:3000")
-	@RequestMapping(method=RequestMethod.GET, value="/getMatchDetails/{nmProfile}")
-	public HeaderStatisticsDTO getMatchDetailsFromProfile(@PathVariable String nmProfile){
-		Integer nuSumKills = 0;
-		Integer nuSumDeaths = 0;
-		Integer nuSumAssists = 0;
-		Integer nuGames = 0;
+	@RequestMapping(method=RequestMethod.GET, value="/getHeaderStatistics/{cdProfile}")
+	public ResponseEntity getHeaderStatisticsFromProfile(@PathVariable String cdProfile){
+		MatchServiceImpl matchServiceImpl = new MatchServiceImpl();
 
-		for(Match match : matchRepository.findAll()) {
-			nuSumKills += match.getNuKills() == null ? 0 : match.getNuKills();
-			nuSumDeaths += match.getNuDeaths() == null ? 0 : match.getNuDeaths();
-			nuSumAssists += match.getNuAssists() == null ? 0 : match.getNuAssists();
-			nuGames++;
+		HeaderStatisticsDTO headerStatistics = matchServiceImpl.findHeaderStatisticsByProfile(1);
+		if(headerStatistics == null) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 
-		return new HeaderStatisticsDTO(nuSumKills, nuSumDeaths, nuSumAssists, nuGames);
+		return new ResponseEntity<>(headerStatistics, HttpStatus.OK);
 	}
 
 	@CrossOrigin(origins = "http://localhost:3000")
-	@RequestMapping(method=RequestMethod.GET, value="/getChampionsDetails/{nmProfile}")
-	public ChampionStatisticsDTO getChampionDetailsFromProfile(@PathVariable String nmProfile) {
-		List<Kill> listAllKills = killRepository.findAll();
-
-		//TODO
-		// PRECISA CRIAR UMA QUERY NO MONGO PARA AGRUPAR POR TYPE E RETORNAR A SOMA
-		return null;
-
+	@RequestMapping(method=RequestMethod.GET, value="/getChampionKill/{cdProfile}")
+	public ResponseEntity getChampionKillByProfile(@PathVariable String cdProfile) {
+		return getChampionKillByProfile(cdProfile, TypeEnum.KILL.getType());
 	}
+
+	@CrossOrigin(origins = "http://localhost:3000")
+	@RequestMapping(method=RequestMethod.GET, value="/getChampionDeath/{cdProfile}")
+	public ResponseEntity getChampionDeathByProfile(@PathVariable String cdProfile) {
+		return getChampionKillByProfile(cdProfile, TypeEnum.DEATH.getType());
+	}
+
+	private ResponseEntity getChampionKillByProfile(@PathVariable String cdProfile, String deType) {
+		KillServiceImpl killServiceImpl = new KillServiceImpl();
+		List<ChampionStatisticsDTO> listMostKilledChampions= new ArrayList<>();
+
+		if(TypeEnum.isKill(deType)) {
+			listMostKilledChampions = killServiceImpl.findMostKilledChampionsByProfile(cdProfile);
+		}else if(TypeEnum.isDeath(deType)) {
+			listMostKilledChampions= killServiceImpl.findMostDeathToChampionsByProfile(cdProfile);
+		}
+
+		if(listMostKilledChampions.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+
+		return new ResponseEntity<>(listMostKilledChampions, HttpStatus.OK);
+	}
+
 
 }

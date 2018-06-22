@@ -1,2 +1,5 @@
 1 - Jogar as coisas lá do controller para uma camada de serviço
 2 - Ajeitar a forma como eh recuperado os dados. Melhorar performance e fazer um circuit break
+3 - FALTA COLOCAR MAIS COLUNAS. TIPO GOLD FEITO NA PARTIDA (PRA FAZER A MEDIA DE DANO POR RECURSO)
+4 - COLOCAR CDPROFILE NO KILL
+5 - precisa guardar os dados da partida ( todos os players, champ, etc)

@@ -32,7 +32,7 @@ public class Kill implements Serializable{
 
 	private String type;
 
-	private BigInteger cdMatch;
+	private Integer nuGameId;
 
 	private String cdProfile;
 
@@ -76,12 +76,12 @@ public class Kill implements Serializable{
 		this.matchPositionDTO = matchPositionDTO;
 	}
 
-	public BigInteger getCdMatch() {
-		return cdMatch;
+	public Integer getNuGameId() {
+		return nuGameId;
 	}
 
-	public void setCdMatch(BigInteger cdMatch) {
-		this.cdMatch = cdMatch;
+	public void setNuGameId(Integer nuGameId) {
+		this.nuGameId = nuGameId;
 	}
 
 	public String getCdProfile() {
