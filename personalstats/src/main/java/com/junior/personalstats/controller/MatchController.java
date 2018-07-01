@@ -77,6 +77,7 @@ public class MatchController {
 			matchList.add(matchDTO);
 
 			Match matchFromMatchDTO = new Match().getMatchFromMatchDTO(matchDTO);
+			matchFromMatchDTO.setCdProfile(cdProfile);
 			matchListConverted.add(matchFromMatchDTO);
 			matchRepository.save(matchFromMatchDTO);
 
@@ -120,6 +121,7 @@ public class MatchController {
 		kill.setNuChampionKill(getChampionFromParticipant(listParticipants, kill.getNuChampionKill()));
 		kill.setNuChampionDeath(getChampionFromParticipant(listParticipants, kill.getNuChampionDeath()));
 		kill.setNuChampionAssist(getChampionFromParticipant(listParticipants, kill.getNuChampionAssist()));
+		kill.setNuParticipant(match.getNuParticipant());
 		kill.setType(getTypeKill(match, kill));
 		killRepository.save(kill);
 	}

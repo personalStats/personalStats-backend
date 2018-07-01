@@ -35,6 +35,8 @@ public class Kill implements Serializable{
 	private Integer nuGameId;
 
 	private String cdProfile;
+	
+	private Integer nuParticipant;
 
 	public Integer getNuChampionKill() {
 		return nuChampionKill;
@@ -100,6 +102,13 @@ public class Kill implements Serializable{
 		this.type = type;
 	}
 
+	public Integer getNuParticipant() {
+		return nuParticipant;
+	}
 
+	public void setNuParticipant(Integer nuParticipant) {
+		this.nuParticipant = nuParticipant;
+	}
+	
 
 }

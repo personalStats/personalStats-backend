@@ -37,6 +37,11 @@ public class Match {
 	private Integer nuVisionScore;
 	private Integer nuTeam;
 	private Integer nuParticipant;
+	private Integer nuTotalMinions;
+	private Integer nuGoldEarned;
+	private Long nuDamageDealt;
+	private Integer nuDragons;
+	private String cdProfile;
 
 	public Match getMatchFromMatchDTO(MatchDTO matchDTO) {
 		this.nuGameId = matchDTO.getMatchDetailsDTO().getCdMatch();
@@ -55,7 +60,10 @@ public class Match {
 				this.nuPentaKills = participantDTO.getStats().getNuPentaKills();
 				this.nuDmgDealt = participantDTO.getStats().getNuDmgDealt();
 				this.nuVisionScore = participantDTO.getStats().getNuVisionScore();
+				this.nuTotalMinions = participantDTO.getStats().getNuTotalMinions();
 				this.nuTeam = participantDTO.getNuTeam();
+				this.nuGoldEarned = participantDTO.getStats().getNuGoldEarned();
+				this.nuDamageDealt = participantDTO.getStats().getNuDamageDealt();
 				this.nuParticipant = participantDTO.getNuParticipant();
 			}
 		}
@@ -64,6 +72,7 @@ public class Match {
 				this.isFirstDragon = teamDTO.isFirstDragon();
 				this.isFirstKill = teamDTO.isFirstKill();
 				this.isFirstTower = teamDTO.isFirstTower();
+				this.nuDragons = teamDTO.getNuDragonKills();
 			}
 		}
 
@@ -240,6 +249,46 @@ public class Match {
 
 	public void setNuParticipant(Integer nuParticipant) {
 		this.nuParticipant = nuParticipant;
+	}
+
+	public Integer getNuTotalMinions() {
+		return nuTotalMinions;
+	}
+
+	public void setNuTotalMinions(Integer nuTotalMinions) {
+		this.nuTotalMinions = nuTotalMinions;
+	}
+
+	public Integer getNuGoldEarned() {
+		return nuGoldEarned;
+	}
+
+	public void setNuGoldEarned(Integer nuGoldEarned) {
+		this.nuGoldEarned = nuGoldEarned;
+	}
+
+	public Long getNuDamageDealt() {
+		return nuDamageDealt;
+	}
+
+	public void setNuDamageDealt(Long nuDamageDealt) {
+		this.nuDamageDealt = nuDamageDealt;
+	}
+
+	public Integer getNuDragons() {
+		return nuDragons;
+	}
+
+	public void setNuDragons(Integer nuDragons) {
+		this.nuDragons = nuDragons;
+	}
+
+	public String getCdProfile() {
+		return cdProfile;
+	}
+
+	public void setCdProfile(String cdProfile) {
+		this.cdProfile = cdProfile;
 	}
 
 

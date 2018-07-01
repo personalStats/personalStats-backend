@@ -37,7 +37,15 @@ public class StatsDTO implements Serializable {
 	
 	@JsonProperty("visionScore")
 	private Integer nuVisionScore;
+	
+	@JsonProperty("totalMinionsKilled")
+	private Integer nuTotalMinions;
 
+	@JsonProperty("goldEarned")
+	private Integer nuGoldEarned;
+	
+	@JsonProperty("totalDamageDealtToChampions")
+	private Long nuDamageDealt;
 	
 	/*
 	 * GET AND SETS
@@ -121,6 +129,30 @@ public class StatsDTO implements Serializable {
 
 	public void setNuVisionScore(Integer nuVisionScore) {
 		this.nuVisionScore = nuVisionScore;
+	}
+
+	public Integer getNuTotalMinions() {
+		return nuTotalMinions;
+	}
+
+	public void setNuTotalMinions(Integer nuTotalMinions) {
+		this.nuTotalMinions = nuTotalMinions;
+	}
+
+	public Integer getNuGoldEarned() {
+		return nuGoldEarned;
+	}
+
+	public void setNuGoldEarned(Integer nuGoldEarned) {
+		this.nuGoldEarned = nuGoldEarned;
+	}
+
+	public Long getNuDamageDealt() {
+		return nuDamageDealt;
+	}
+
+	public void setNuDamageDealt(Long nuDamageDealt) {
+		this.nuDamageDealt = nuDamageDealt;
 	}
 	
 	

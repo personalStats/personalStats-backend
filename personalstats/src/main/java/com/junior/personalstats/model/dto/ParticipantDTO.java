@@ -19,7 +19,10 @@ public class ParticipantDTO implements Serializable{
 
 	@JsonProperty("participantId")
 	private Integer nuParticipant;
-
+	
+	public ParticipantDTO() {
+		//HIDE CONSTRUCTOR
+	}
 
 	public ParticipantDTO(Integer nuChampion, Integer nuTeam, StatsDTO stats, Integer nuParticipant) {
 		super();

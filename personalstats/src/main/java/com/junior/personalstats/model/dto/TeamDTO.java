@@ -23,6 +23,9 @@ public class TeamDTO implements Serializable{
 	@JsonProperty("isFirstDragon")
 	private boolean isFirstDragon;
 
+	@JsonProperty("dragonKills")
+	private Integer nuDragonKills;
+	
 	/*
 	 * GET AND SET
 	 */
@@ -66,6 +69,14 @@ public class TeamDTO implements Serializable{
 	public void setFirstDragon(boolean isFirstDragon) {
 		this.isFirstDragon = isFirstDragon;
 	}
-	
+
+	public Integer getNuDragonKills() {
+		return nuDragonKills;
+	}
+
+	public void setNuDragonKills(Integer nuDragonKills) {
+		this.nuDragonKills = nuDragonKills;
+	}
+
 	
 }
