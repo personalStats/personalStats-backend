@@ -27,24 +27,26 @@ import com.junior.personalstats.model.Kill;
 import com.junior.personalstats.model.Match;
 import com.junior.personalstats.model.Profile;
 import com.junior.personalstats.model.dto.ChampionStatisticsDTO;
+import com.junior.personalstats.model.dto.GenericDragonDTO;
 import com.junior.personalstats.model.dto.HeaderStatisticsDTO;
 import com.junior.personalstats.model.dto.MatchDTO;
 import com.junior.personalstats.model.dto.MatchDetailsDTO;
 import com.junior.personalstats.model.dto.MatchReferenceDTO;
 import com.junior.personalstats.model.dto.ParticipantDTO;
-import com.junior.personalstats.repository.KillRepository;
-import com.junior.personalstats.repository.MatchRepository;
+import com.junior.personalstats.model.dto.RankingStatsDTO;
 import com.junior.personalstats.repository.ProfileRepository;
-import com.junior.personalstats.repository.impl.KillServiceImpl;
-import com.junior.personalstats.repository.impl.MatchServiceImpl;
+import com.junior.personalstats.service.KillService;
+import com.junior.personalstats.service.MatchService;
+import com.junior.personalstats.service.impl.KillServiceImpl;
 
 @RestController
+@SuppressWarnings("rawtypes")
 public class MatchController {
 
 	@Autowired
-	private MatchRepository matchRepository;
+	private MatchService matchService;
 	@Autowired
-	private KillRepository killRepository;
+	private KillService killService;
 	@Autowired
 	private ProfileRepository profileRepository;
 	@Autowired
@@ -77,9 +79,9 @@ public class MatchController {
 			matchList.add(matchDTO);
 
 			Match matchFromMatchDTO = new Match().getMatchFromMatchDTO(matchDTO);
-			matchFromMatchDTO.setCdProfile(cdProfile);
+			matchFromMatchDTO.setProfile(profile);
 			matchListConverted.add(matchFromMatchDTO);
-			matchRepository.save(matchFromMatchDTO);
+			matchService.save(matchFromMatchDTO);
 
 			String urlMatchKills = String.format("https://br1.api.riotgames.com/lol/match/v3/timelines/by-match/%s?api_key=%s", referenceDTO.getCdMatch(), nuKey);
 			ObjectNode objectNode = new RestTemplate().getForObject(urlMatchKills, ObjectNode.class);
@@ -123,7 +125,7 @@ public class MatchController {
 		kill.setNuChampionAssist(getChampionFromParticipant(listParticipants, kill.getNuChampionAssist()));
 		kill.setNuParticipant(match.getNuParticipant());
 		kill.setType(getTypeKill(match, kill));
-		killRepository.save(kill);
+		killService.save(kill);
 	}
 
 	private String getTypeKill(Match match, Kill kill) {
@@ -162,14 +164,24 @@ public class MatchController {
 	@CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping(method=RequestMethod.GET, value="/getHeaderStatistics/{cdProfile}")
 	public ResponseEntity getHeaderStatisticsFromProfile(@PathVariable String cdProfile){
-		MatchServiceImpl matchServiceImpl = new MatchServiceImpl();
 
-		HeaderStatisticsDTO headerStatistics = matchServiceImpl.findHeaderStatisticsByProfile(1);
+		HeaderStatisticsDTO headerStatistics = matchService.findHeaderStatisticsByProfile(cdProfile);
 		if(headerStatistics == null) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 
 		return new ResponseEntity<>(headerStatistics, HttpStatus.OK);
+	}
+
+	@CrossOrigin(origins = "http://localhost:3000")
+	@RequestMapping(method=RequestMethod.GET, value="/getKillingspreePerChampionByProfile/{cdProfile}")
+	public ResponseEntity getDoubleKillsChampionByProfile(@PathVariable String cdProfile) {
+		List<HeaderStatisticsDTO> listaKillingspree = matchService.findKillingspreePerChampionByProfile(cdProfile);
+		if(listaKillingspree.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+
+		return new ResponseEntity<>(listaKillingspree, HttpStatus.OK);
 	}
 
 	@CrossOrigin(origins = "http://localhost:3000")
@@ -199,6 +211,31 @@ public class MatchController {
 		}
 
 		return new ResponseEntity<>(listMostKilledChampions, HttpStatus.OK);
+	}
+
+	@CrossOrigin(origins = "http://localhost:3000")
+	@RequestMapping(method=RequestMethod.GET, value="/getDragonData/{cdProfile}")
+	public ResponseEntity getDragonDataFromProfile(@PathVariable String cdProfile) {
+		GenericDragonDTO dragonByProfile = matchService.findDragonsByProfile(cdProfile);
+
+		if(dragonByProfile == null) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+
+		return new ResponseEntity<>(dragonByProfile, HttpStatus.OK);
+	}
+
+
+	@CrossOrigin(origins = "http://localhost:3000")
+	@RequestMapping(method=RequestMethod.GET, value="/getDragonRankingData")
+	public ResponseEntity getDragonRankingData() {
+		List<RankingStatsDTO> listDragonRanking = matchService.findRankingDragons();
+
+		if(listDragonRanking.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+
+		return new ResponseEntity<>(listDragonRanking, HttpStatus.OK);
 	}
 
 

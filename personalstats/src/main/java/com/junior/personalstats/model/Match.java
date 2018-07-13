@@ -16,6 +16,8 @@ public class Match {
 	@Id
 	private BigInteger cdMatch;
 
+	private Profile profile;
+
 	private Integer nuGameId;
 	private Integer nuChampion;
 	private Date dtMatch;
@@ -41,7 +43,6 @@ public class Match {
 	private Integer nuGoldEarned;
 	private Long nuDamageDealt;
 	private Integer nuDragons;
-	private String cdProfile;
 
 	public Match getMatchFromMatchDTO(MatchDTO matchDTO) {
 		this.nuGameId = matchDTO.getMatchDetailsDTO().getCdMatch();
@@ -283,12 +284,12 @@ public class Match {
 		this.nuDragons = nuDragons;
 	}
 
-	public String getCdProfile() {
-		return cdProfile;
+	public Profile getProfile() {
+		return profile;
 	}
 
-	public void setCdProfile(String cdProfile) {
-		this.cdProfile = cdProfile;
+	public void setProfile(Profile profile) {
+		this.profile = profile;
 	}
 
 

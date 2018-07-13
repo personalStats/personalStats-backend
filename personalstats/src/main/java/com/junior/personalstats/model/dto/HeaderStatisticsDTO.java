@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class HeaderStatisticsDTO implements Serializable{
 
+	private Integer nuChampion;
+	private String nmChampion;
 	private Integer nuKills;
 	private Integer nuDeaths;
 	private Integer nuAssists;
@@ -83,4 +85,19 @@ public class HeaderStatisticsDTO implements Serializable{
 		this.nuPentaKills = nuPentaKills;
 	}
 
+	public String getNmChampion() {
+		return nmChampion;
+	}
+
+	public void setNmChampion(String nmChampion) {
+		this.nmChampion = nmChampion;
+	}
+
+	public Integer getNuChampion() {
+		return nuChampion;
+	}
+
+	public void setNuChampion(Integer nuChampion) {
+		this.nuChampion = nuChampion;
+	}
 }

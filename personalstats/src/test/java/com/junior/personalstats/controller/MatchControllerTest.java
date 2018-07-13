@@ -1,14 +1,17 @@
 package com.junior.personalstats.controller;
 
 import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import org.junit.Test;
 
 import com.junior.personalstats.model.dto.ChampionStatisticsDTO;
+import com.junior.personalstats.model.dto.GenericDragonDTO;
 import com.junior.personalstats.model.dto.GenericStatsDTO;
 import com.junior.personalstats.model.dto.HeaderStatisticsDTO;
-import com.junior.personalstats.repository.impl.KillServiceImpl;
-import com.junior.personalstats.repository.impl.MatchServiceImpl;
+import com.junior.personalstats.service.impl.KillServiceImpl;
+import com.junior.personalstats.service.impl.MatchServiceImpl;
 
 public class MatchControllerTest {
 
@@ -32,7 +35,7 @@ public class MatchControllerTest {
 
 	@Test
 	public void searchMultipleKills() {
-		Integer cdProfile = 1;
+		String cdProfile = "1";
 		MatchServiceImpl matchServiceImpl = new MatchServiceImpl();
 
 		HeaderStatisticsDTO headerStatisticsDTO = matchServiceImpl.findHeaderStatisticsByProfile(cdProfile);
@@ -65,6 +68,21 @@ public class MatchControllerTest {
 
 	}
 
+	@Test
+	public void searchDragonScore() {
+		String cdProfile = "1";
+		MatchServiceImpl matchServiceImpl = new MatchServiceImpl();
+
+		GenericDragonDTO genericDragonDTO = matchServiceImpl.findDragonsByProfile(cdProfile);
+
+		System.out.println("Média de dragões por game: " + genericDragonDTO.getNuDragonAvgPerGame());
+		System.out.println(String.format("Games com pelo menos 1 dragao: %s (%s dos jogos)", genericDragonDTO.getNuGamesWithAtLeastOneDrag(), genericDragonDTO.getNuGamesWithAtLeastOneDragPerc()));
+		System.out.println(String.format("Games com pelo menos 1 dragao e com vitoria: %s (%s dos jogos) ", genericDragonDTO.getNuGamesWinWithAtLeastOneDrag(), genericDragonDTO.getNuGamesWinWithAtLeastOneDragPerc()));
+		System.out.println(String.format("Games com pelo menos 2 dragoes: %s (%s dos jogos) ", genericDragonDTO.getNuGamesWithMorethen2Drags(), genericDragonDTO.getNuGamesWithMorethen2DragsPerc()));
+		System.out.println(String.format("Games com pelo menos 2 dragoes e com vitoria: %s (%s dos jogos) ", genericDragonDTO.getNuGamesWithMorethen2DragsAndWin(), genericDragonDTO.getNuGamesWithMorethen2DragsAndWinPerc()));
+	}
+
 
 
 }
+
