@@ -22,23 +22,23 @@ public class ProfileController {
 	private ProfileRepository profileRepository;
 	@Autowired
 	private Environment env;
-	
-	
+
+
 	@RequestMapping(method=RequestMethod.POST, value="/profile/{nmProfile}")
 	public ResponseEntity salvarProfile(@PathVariable String nmProfile) {
 		String nuRegiao = "br1";
 		String nuKey = env.getProperty("personalStats.nuKey");
 		String urlProfile = String.format("https://%s.api.riotgames.com/lol/summoner/v3/summoners/by-name/%s?api_key=%s", nuRegiao, nmProfile, nuKey);
-		
+
 		Profile profile = new RestTemplate().getForObject(urlProfile, Profile.class);
 		profileRepository.save(profile);
-		
+
 		return ResponseEntity.status(HttpStatus.OK).body(profile);
 	}
-	
+
 	@RequestMapping(method=RequestMethod.GET, value="/profile/{cdProfile}")
 	public Profile findOneProfile(@PathVariable BigInteger cdProfile) {
 		return profileRepository.findById(cdProfile).get();
 	}
-	
+
 }

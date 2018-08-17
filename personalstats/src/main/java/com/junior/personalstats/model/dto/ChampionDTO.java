@@ -1,24 +1,20 @@
 package com.junior.personalstats.model.dto;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document(collection = "champion")
 public class ChampionDTO {
 
-	@Id
-	private Integer cdChampion;
+	private Integer nuChampion;
 	private String deChampion;
+	private String urlFoto;
 
 	/*
 	 * GET AND SETS
 	 */
 
-	public Integer getCdChampion() {
-		return cdChampion;
+	public Integer getNuChampion() {
+		return nuChampion;
 	}
-	public void setCdChampion(Integer cdChampion) {
-		this.cdChampion = cdChampion;
+	public void setNuChampion(Integer nuChampion) {
+		this.nuChampion = nuChampion;
 	}
 	public String getDeChampion() {
 		return deChampion;
@@ -26,6 +22,14 @@ public class ChampionDTO {
 	public void setDeChampion(String deChampion) {
 		this.deChampion = deChampion;
 	}
+	public String getUrlFoto() {
+		return urlFoto;
+	}
+	public void setUrlFoto(String urlFoto) {
+		this.urlFoto = urlFoto;
+	}
+
+
 
 
 

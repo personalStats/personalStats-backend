@@ -9,8 +9,8 @@ public interface KillService {
 
 	void save(Kill kill);
 
-	List<ChampionStatisticsDTO> findMostKilledChampionsByProfile(String cdProfile);
+	List<ChampionStatisticsDTO> findMostKilledChampionsByProfile(ChampionService championService, String cdProfile);
 
-	List<ChampionStatisticsDTO> findMostDeathToChampionsByProfile(String cdProfile);
+	List<ChampionStatisticsDTO> findMostDeathToChampionsByProfile(ChampionService championService, String cdProfile);
 
 }

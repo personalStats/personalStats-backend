@@ -1,9 +1,14 @@
 package com.junior.personalstats.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import com.junior.personalstats.model.Profile;
 
 public interface ProfileService {
 
-	Profile getProfileData(String cdProfile);
+	Optional<Profile> getProfileData(String cdProfile);
+
+	List<Profile> findAll();
 
 }

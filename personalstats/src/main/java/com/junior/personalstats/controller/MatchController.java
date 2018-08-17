@@ -23,20 +23,22 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.junior.personalstats.constants.TypeEnum;
+import com.junior.personalstats.exceptions.ProfileNotFoundException;
+import com.junior.personalstats.model.Dragon;
 import com.junior.personalstats.model.Kill;
 import com.junior.personalstats.model.Match;
 import com.junior.personalstats.model.Profile;
 import com.junior.personalstats.model.dto.ChampionStatisticsDTO;
-import com.junior.personalstats.model.dto.GenericDragonDTO;
 import com.junior.personalstats.model.dto.HeaderStatisticsDTO;
 import com.junior.personalstats.model.dto.MatchDTO;
 import com.junior.personalstats.model.dto.MatchDetailsDTO;
 import com.junior.personalstats.model.dto.MatchReferenceDTO;
 import com.junior.personalstats.model.dto.ParticipantDTO;
-import com.junior.personalstats.model.dto.RankingStatsDTO;
-import com.junior.personalstats.repository.ProfileRepository;
+import com.junior.personalstats.service.ChampionService;
+import com.junior.personalstats.service.DragonService;
 import com.junior.personalstats.service.KillService;
 import com.junior.personalstats.service.MatchService;
+import com.junior.personalstats.service.ProfileService;
 import com.junior.personalstats.service.impl.KillServiceImpl;
 
 @RestController
@@ -48,7 +50,11 @@ public class MatchController {
 	@Autowired
 	private KillService killService;
 	@Autowired
-	private ProfileRepository profileRepository;
+	private ProfileService profileService;
+	@Autowired
+	private DragonService dragonService;
+	@Autowired
+	private ChampionService championService;
 	@Autowired
 	private Environment env;
 
@@ -66,7 +72,7 @@ public class MatchController {
 		List<Match> matchListConverted = new ArrayList<>();
 		ObjectMapper mapper = new ObjectMapper();
 
-		String urlListaMatch = String.format("https://br1.api.riotgames.com/lol/match/v3/matchlists/by-account/%s?beginIndex=1&season=11&endIndex=5&api_key=%s",profile.getNuAccount(),nuKey);
+		String urlListaMatch = String.format("https://br1.api.riotgames.com/lol/match/v3/matchlists/by-account/%s?beginIndex=1&season=11&api_key=%s",profile.getNuAccount(),nuKey);
 		MatchDTO matchResponse = new RestTemplate().getForObject(urlListaMatch, MatchDTO.class);
 		for (MatchReferenceDTO referenceDTO : matchResponse.getMatchReferences()) {
 			MatchDTO matchDTO = new MatchDTO();
@@ -88,8 +94,11 @@ public class MatchController {
 			JsonNode highDepth = objectNode.get("frames");
 			for (JsonNode jsonNode : highDepth) {
 				for (JsonNode jsonEvento : jsonNode.get("events")) {
-					if(isEventoKill(jsonEvento) && profileIsEnvolved(jsonEvento, mapper, matchFromMatchDTO.getNuParticipant())) {
+					if(isEventoKill(jsonEvento) &&  profileIsEnvolved(jsonEvento, mapper, matchFromMatchDTO.getNuParticipant())) {
 						saveKill(mapper, jsonEvento, profile, matchFromMatchDTO, matchDTO.getMatchDetailsDTO().getParticipants());
+					}
+					if(isEventoDragon(jsonEvento) && profileIsEnvolved(jsonEvento, matchFromMatchDTO, matchDTO.getMatchDetailsDTO().getParticipants())) {
+						saveDragon(jsonEvento, profile, matchFromMatchDTO);
 					}
 
 				}
@@ -100,20 +109,26 @@ public class MatchController {
 		return matchListConverted;
 	}
 
-	private boolean profileIsEnvolved(JsonNode jsonEvento, ObjectMapper mapper, Integer nuChampion) throws JsonProcessingException {
-		Kill kill = mapper.treeToValue(jsonEvento, Kill.class);
-		return kill.getNuChampionAssist().contains(nuChampion) || kill.getNuChampionDeath() == nuChampion || kill.getNuChampionKill() == nuChampion;
+	private boolean profileIsEnvolved(JsonNode jsonEvento, Match matchFromMatchDTO,	List<ParticipantDTO> participants) {
+
+		int nuKiller = jsonEvento.get("killerId").asInt();
+		return participants.stream().filter(p -> p.getNuTeam() == matchFromMatchDTO.getNuTeam()).anyMatch(p -> p.getNuParticipant() == nuKiller);
 
 	}
 
-	private Profile recuperaProfile(String cdProfile) throws Exception {
-		List<Profile> findAll = profileRepository.findAll();
+	private boolean profileIsEnvolved(JsonNode jsonEvento, ObjectMapper mapper, Integer nuChampion) throws JsonProcessingException {
+		Kill kill = mapper.treeToValue(jsonEvento, Kill.class);
+		return kill.getNuChampionAssist().contains(nuChampion) || kill.getNuChampionDeath() == nuChampion || kill.getNuChampionKill() == nuChampion;
+	}
 
-//		if(!profilePromisse.isPresent()) {
-//			throw new Exception("Profile náo encontrado!");
-//		}
 
-		return findAll.get(0);
+	private Profile recuperaProfile(String cdProfile) throws ProfileNotFoundException{
+		Optional<Profile> profile = profileService.getProfileData(cdProfile);
+		if(!profile.isPresent()) {
+			throw new ProfileNotFoundException();
+		}
+
+		return profile.get();
 	}
 
 	private void saveKill(ObjectMapper mapper, JsonNode jsonEvento, Profile profile, Match match, List<ParticipantDTO> listParticipants) throws JsonProcessingException {
@@ -126,6 +141,16 @@ public class MatchController {
 		kill.setNuParticipant(match.getNuParticipant());
 		kill.setType(getTypeKill(match, kill));
 		killService.save(kill);
+	}
+
+	private void saveDragon(JsonNode jsonEvento, Profile profile, Match match) {
+		Dragon dragon = new Dragon();
+		dragon.setCdProfile(profile.getCdProfile());
+		dragon.setNuGameId(match.getNuGameId());
+		dragon.setDeTypeDragon(jsonEvento.get("monsterSubType").toString());
+		dragon.setNuTimeDragon(jsonEvento.get("timestamp").toString());
+
+		dragonService.save(dragon);
 	}
 
 	private String getTypeKill(Match match, Kill kill) {
@@ -158,7 +183,11 @@ public class MatchController {
 	}
 
 	private boolean isEventoKill(JsonNode jsonEvento) {
-		return StringUtils.replace(jsonEvento.get("type").toString(), "\"", "").equals("CHAMPION_KILL");
+		return jsonEvento.get("type") != null && StringUtils.replace(jsonEvento.get("type").toString(), "\"", "").equals("CHAMPION_KILL");
+	}
+
+	private boolean isEventoDragon(JsonNode jsonEvento) {
+		return jsonEvento.get("monsterType") != null && StringUtils.replace(jsonEvento.get("monsterType").toString(), "\"", "").equals("DRAGON");
 	}
 
 	@CrossOrigin(origins = "http://localhost:3000")
@@ -201,9 +230,9 @@ public class MatchController {
 		List<ChampionStatisticsDTO> listMostKilledChampions= new ArrayList<>();
 
 		if(TypeEnum.isKill(deType)) {
-			listMostKilledChampions = killServiceImpl.findMostKilledChampionsByProfile(cdProfile);
+			listMostKilledChampions = killServiceImpl.findMostKilledChampionsByProfile(championService, cdProfile);
 		}else if(TypeEnum.isDeath(deType)) {
-			listMostKilledChampions= killServiceImpl.findMostDeathToChampionsByProfile(cdProfile);
+			listMostKilledChampions= killServiceImpl.findMostDeathToChampionsByProfile(championService, cdProfile);
 		}
 
 		if(listMostKilledChampions.isEmpty()) {
@@ -211,31 +240,6 @@ public class MatchController {
 		}
 
 		return new ResponseEntity<>(listMostKilledChampions, HttpStatus.OK);
-	}
-
-	@CrossOrigin(origins = "http://localhost:3000")
-	@RequestMapping(method=RequestMethod.GET, value="/getDragonData/{cdProfile}")
-	public ResponseEntity getDragonDataFromProfile(@PathVariable String cdProfile) {
-		GenericDragonDTO dragonByProfile = matchService.findDragonsByProfile(cdProfile);
-
-		if(dragonByProfile == null) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
-
-		return new ResponseEntity<>(dragonByProfile, HttpStatus.OK);
-	}
-
-
-	@CrossOrigin(origins = "http://localhost:3000")
-	@RequestMapping(method=RequestMethod.GET, value="/getDragonRankingData")
-	public ResponseEntity getDragonRankingData() {
-		List<RankingStatsDTO> listDragonRanking = matchService.findRankingDragons();
-
-		if(listDragonRanking.isEmpty()) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
-
-		return new ResponseEntity<>(listDragonRanking, HttpStatus.OK);
 	}
 
 

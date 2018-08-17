@@ -1,6 +1,10 @@
 package com.junior.personalstats.service.impl;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.junior.personalstats.model.Profile;
@@ -15,10 +19,17 @@ public class ProfileServiceImpl extends MongoHandler implements ProfileService {
 	private ProfileRepository profileRepository;
 
 	@Override
-	public Profile getProfileData(String cdProfile) {
-		return null;
+	public Optional<Profile> getProfileData(String cdProfile) {
+
+		Profile profile = new Profile();
+		profile.setCdProfile(cdProfile);
+
+		return profileRepository.findOne(Example.of(profile));
 	}
 
-
+	@Override
+	public List<Profile> findAll(){
+		return profileRepository.findAll();
+	}
 
 }

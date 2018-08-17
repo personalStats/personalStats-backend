@@ -10,6 +10,7 @@ public class ChampionStatisticsDTO implements Serializable {
 	private Integer nuKills;
 	private Integer nuDeaths;
 	private Integer nuAssists;
+	private ChampionDTO champion;
 
 	public ChampionStatisticsDTO() {
 		//HIDE CONSTRUCTOR
@@ -18,6 +19,12 @@ public class ChampionStatisticsDTO implements Serializable {
 	public ChampionStatisticsDTO(Integer nuChampion, Integer nuKills) {
 		super();
 		this.nuChampion = nuChampion;
+		this.nuKills = nuKills;
+	}
+
+	public ChampionStatisticsDTO(ChampionDTO champion, Integer nuKills) {
+		super();
+		this.champion = champion;
 		this.nuKills = nuKills;
 	}
 
@@ -61,5 +68,14 @@ public class ChampionStatisticsDTO implements Serializable {
 	public void setNuAssists(Integer nuAssists) {
 		this.nuAssists = nuAssists;
 	}
+
+	public ChampionDTO getChampion() {
+		return champion;
+	}
+
+	public void setChampion(ChampionDTO champion) {
+		this.champion = champion;
+	}
+
 
 }

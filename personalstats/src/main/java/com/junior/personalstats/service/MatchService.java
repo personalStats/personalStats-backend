@@ -18,9 +18,4 @@ public interface MatchService {
 
 	List<GenericStatsDTO> findVisionScoreById(Integer cdProfile);
 
-	GenericDragonDTO findDragonsByProfile(String cdProfile);
-
-	List<RankingStatsDTO> findRankingDragons();
-
-
 }

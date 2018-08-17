@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.junior.personalstats.constants.TypeEnum;
 import com.junior.personalstats.model.Kill;
+import com.junior.personalstats.model.dto.ChampionDTO;
 import com.junior.personalstats.model.dto.ChampionStatisticsDTO;
 import com.junior.personalstats.repository.KillRepository;
+import com.junior.personalstats.service.ChampionService;
 import com.junior.personalstats.service.KillService;
 import com.junior.personalstats.util.MongoHandler;
 import com.mongodb.MongoClient;
@@ -26,21 +28,25 @@ import com.mongodb.client.model.Sorts;
 public class KillServiceImpl extends MongoHandler implements KillService{
 
 	@Autowired
-	private KillRepository KillRepository;
+	private KillRepository killRepository;
+
+	private ChampionService championService;
 
 	@Override
 	public void save(Kill kill) {
-		KillRepository.save(kill);
+		killRepository.save(kill);
 	}
 
 
 	@Override
-	public List<ChampionStatisticsDTO> findMostKilledChampionsByProfile(String cdProfile) {
-		 return findDataByProfile(cdProfile, TypeEnum.KILL.getType());
+	public List<ChampionStatisticsDTO> findMostKilledChampionsByProfile(ChampionService championService, String cdProfile) {
+		this.championService = championService;
+		return findDataByProfile(cdProfile, TypeEnum.KILL.getType());
 	}
 
 	@Override
-	public List<ChampionStatisticsDTO> findMostDeathToChampionsByProfile(String cdProfile) {
+	public List<ChampionStatisticsDTO> findMostDeathToChampionsByProfile(ChampionService championService, String cdProfile) {
+		this.championService = championService;
 		 return findDataByProfile(cdProfile, TypeEnum.DEATH.getType());
 	}
 
@@ -54,14 +60,15 @@ public class KillServiceImpl extends MongoHandler implements KillService{
 		MongoCursor<Document> iterator = collection.aggregate(
 				Arrays.asList(
 						Aggregates.match(Filters.eq("type", deType)),
-						Aggregates.group(deType.equals(TypeEnum.KILL.getType()) ? "$nuChampionKill" : "$nuChampionDeath", Accumulators.sum("count", 1)),
+						Aggregates.group(deType.equals(TypeEnum.KILL.getType()) ?  "$nuChampionDeath" : "$nuChampionKill" , Accumulators.sum("count", 1)),
 						Aggregates.sort(Sorts.descending("count"))
 				)
 		)
 		.iterator();
 		while(iterator.hasNext()) {
 		     Document doc = iterator.next();
-		     listaKills.add(new ChampionStatisticsDTO(doc.getInteger("_id" ), doc.getInteger("count")));
+		     ChampionDTO championDTO = championService.getChampionById(doc.getInteger("_id" ));
+		     listaKills.add(new ChampionStatisticsDTO(championDTO, doc.getInteger("count")));
 		}
 
 		return listaKills;
