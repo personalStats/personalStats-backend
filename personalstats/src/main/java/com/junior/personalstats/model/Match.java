@@ -35,14 +35,17 @@ public class Match {
 	private Integer nuTripleKills;
 	private Integer nuQuadraKills;
 	private Integer nuPentaKills;
-	private Integer nuDmgDealt;
+	private Long nuDmgDealt;
 	private Integer nuVisionScore;
 	private Integer nuTeam;
 	private Integer nuParticipant;
 	private Integer nuTotalMinions;
 	private Integer nuGoldEarned;
-	private Long nuDamageDealt;
 	private Integer nuDragons;
+	private Integer nuMaxCriticalStrike;
+	private Integer nuMaxKillingSpree;
+	private Long nuTimeCcGiven;
+	private Integer nuGameLength;
 
 	public Match getMatchFromMatchDTO(MatchDTO matchDTO) {
 		this.nuGameId = matchDTO.getMatchDetailsDTO().getCdMatch();
@@ -50,6 +53,8 @@ public class Match {
 		this.dtMatch = matchDTO.getMatchDetailsDTO().getDtMatch();
 		this.nuSeason = matchDTO.getMatchDetailsDTO().getNuSeason();
 		this.isWin = matchDTO.getMatchDetailsDTO().isWin();
+		this.nuGameLength = matchDTO.getMatchDetailsDTO().getNuGameLength();
+
 		for (ParticipantDTO participantDTO : matchDTO.getMatchDetailsDTO().getParticipants()) {
 			if(participantDTO.getNuChampion() == nuChampion) {
 				this.nuKills = participantDTO.getStats().getNuKills();
@@ -59,13 +64,16 @@ public class Match {
 				this.nuTripleKills = participantDTO.getStats().getNuTripleKills();
 				this.nuQuadraKills = participantDTO.getStats().getNuQuadraKills();
 				this.nuPentaKills = participantDTO.getStats().getNuPentaKills();
-				this.nuDmgDealt = participantDTO.getStats().getNuDmgDealt();
+				this.nuDmgDealt = participantDTO.getStats().getNuDamageDealt();
 				this.nuVisionScore = participantDTO.getStats().getNuVisionScore();
 				this.nuTotalMinions = participantDTO.getStats().getNuTotalMinions();
 				this.nuTeam = participantDTO.getNuTeam();
 				this.nuGoldEarned = participantDTO.getStats().getNuGoldEarned();
-				this.nuDamageDealt = participantDTO.getStats().getNuDamageDealt();
 				this.nuParticipant = participantDTO.getNuParticipant();
+				this.nuMaxCriticalStrike = participantDTO.getStats().getNuMaxCriticalStrike();
+				this.nuMaxKillingSpree = participantDTO.getStats().getNuMaxKillingSpree();
+				this.nuTimeCcGiven = participantDTO.getStats().getNuTimeCcGiven();
+
 			}
 		}
 		for (TeamDTO teamDTO : matchDTO.getMatchDetailsDTO().getTeams()) {
@@ -188,11 +196,11 @@ public class Match {
 		this.nuPentaKills = nuPentaKills;
 	}
 
-	public Integer getNuDmgDealt() {
+	public Long getNuDmgDealt() {
 		return nuDmgDealt;
 	}
 
-	public void setNuDmgDealt(Integer nuDmgDealt) {
+	public void setNuDmgDealt(Long nuDmgDealt) {
 		this.nuDmgDealt = nuDmgDealt;
 	}
 
@@ -268,14 +276,6 @@ public class Match {
 		this.nuGoldEarned = nuGoldEarned;
 	}
 
-	public Long getNuDamageDealt() {
-		return nuDamageDealt;
-	}
-
-	public void setNuDamageDealt(Long nuDamageDealt) {
-		this.nuDamageDealt = nuDamageDealt;
-	}
-
 	public Integer getNuDragons() {
 		return nuDragons;
 	}
@@ -290,6 +290,38 @@ public class Match {
 
 	public void setProfile(Profile profile) {
 		this.profile = profile;
+	}
+
+	public Integer getNuMaxCriticalStrike() {
+		return nuMaxCriticalStrike;
+	}
+
+	public void setNuMaxCriticalStrike(Integer nuMaxCriticalStrike) {
+		this.nuMaxCriticalStrike = nuMaxCriticalStrike;
+	}
+
+	public Integer getNuMaxKillingSpree() {
+		return nuMaxKillingSpree;
+	}
+
+	public void setNuMaxKillingSpree(Integer nuMaxKillingSpree) {
+		this.nuMaxKillingSpree = nuMaxKillingSpree;
+	}
+
+	public Long getNuTimeCcGiven() {
+		return nuTimeCcGiven;
+	}
+
+	public void setNuTimeCcGiven(Long nuTimeCcGiven) {
+		this.nuTimeCcGiven = nuTimeCcGiven;
+	}
+
+	public Integer getNuGameLength() {
+		return nuGameLength;
+	}
+
+	public void setNuGameLength(Integer nuGameLength) {
+		this.nuGameLength = nuGameLength;
 	}
 
 

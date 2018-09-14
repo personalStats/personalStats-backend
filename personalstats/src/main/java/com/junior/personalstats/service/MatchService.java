@@ -18,4 +18,6 @@ public interface MatchService {
 
 	List<GenericStatsDTO> findVisionScoreById(Integer cdProfile);
 
+	List<GenericStatsDTO> findMostDamagedGameByProfile(String cdProfile);
+
 }

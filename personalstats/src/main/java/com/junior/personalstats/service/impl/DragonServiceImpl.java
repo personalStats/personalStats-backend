@@ -6,6 +6,14 @@ import java.util.List;
 
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.GroupOperation;
+import org.springframework.data.mongodb.core.aggregation.LimitOperation;
+import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
+import org.springframework.data.mongodb.core.aggregation.SortOperation;
 import org.springframework.stereotype.Service;
 
 import com.junior.personalstats.model.Dragon;
@@ -21,7 +29,6 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Accumulators;
 import com.mongodb.client.model.Aggregates;
-import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
 
 @Service
@@ -101,17 +108,18 @@ public class DragonServiceImpl extends MongoHandler implements DragonService{
 
 			MongoCursor<Document> iterator = collection.aggregate(
 					Arrays.asList(
-							Aggregates.group("$profile.cdProfile", Accumulators.sum("total", "$nuDragons")),
-							Aggregates.match(Filters.gt("$nuDragons", 0)),
+							Aggregates.project(new Document("profile.deProfile", 1)),
+							Aggregates.project(new Document("profile.nuAccount", 2)),
+							Aggregates.group("$profile.nuAccount", Accumulators.sum("total", "$nuDragons")),
 							Aggregates.sort(Sorts.descending("total"))
 					)
 			)
 			.iterator();
 
-			Integer contador = 1;
+			Integer contador = 0;
 			while(iterator.hasNext()) {
 			     Document doc = iterator.next();
-			     listRankingDrag.add(new RankingStatsDTO(contador, doc.getString("profile.nmProfile"), doc.getInteger("total")));
+			     listRankingDrag.add(new RankingStatsDTO(++contador, doc.getString("profile.deProfile"), doc.getInteger("total")));
 			}
 
 			return listRankingDrag;

@@ -13,35 +13,38 @@ public class MatchDetailsDTO {
 
 	@JsonProperty("gameId")
 	private Integer cdMatch;
-	
+
 	private String cdRole;
 	private Date dtMatch;
 
 	@JsonProperty("seasonId")
 	private Integer nuSeason;
 	private String cdQueue;
-	
+
 	@JsonProperty("win")
 	private boolean isWin;
-	
+
 	private Integer nuChampion;
-	
+
 	private Profile profile;
-	
+
 	@Transient
 	@JsonProperty("teams")
 	private List<TeamDTO> teams;
-	
+
 	@Transient
 	@JsonProperty("participants")
 	private List<ParticipantDTO> participants;
 
-	
+	@JsonProperty("gameDuration")
+	private Integer nuGameLength;
+
+
 	/*
 	 * GETS AND SETS
-	 * 
+	 *
 	 */
-	
+
 	public Integer getCdMatch() {
 		return cdMatch;
 	}
@@ -120,6 +123,14 @@ public class MatchDetailsDTO {
 
 	public void setNuChampion(Integer nuChampion) {
 		this.nuChampion = nuChampion;
+	}
+
+	public Integer getNuGameLength() {
+		return nuGameLength;
+	}
+
+	public void setNuGameLength(Integer nuGameLength) {
+		this.nuGameLength = nuGameLength;
 	}
 
 }

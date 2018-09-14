@@ -10,47 +10,53 @@ public class StatsDTO implements Serializable {
 
 	@JsonProperty("kills")
 	private Integer nuKills;
-	
+
 	@JsonProperty("deaths")
 	private Integer nuDeaths;
-	
+
 	@JsonProperty("assists")
 	private Integer nuAssists;
-	
+
 	@JsonProperty("longestTimeSpentLiving")
 	private Integer nuMaxTimeAlive;
-	
+
 	@JsonProperty("doubleKills")
 	private Integer nuDoubleKills;
-	
+
 	@JsonProperty("trippleKills")
 	private Integer nuTripleKills;
-	
+
 	@JsonProperty("quadraKills")
 	private Integer nuQuadraKills;
-	
+
 	@JsonProperty("pentaKills")
 	private Integer nuPentaKills;
-	
-	@JsonProperty("totalDamageDealt")
-	private Integer nuDmgDealt;
-	
+
 	@JsonProperty("visionScore")
 	private Integer nuVisionScore;
-	
+
 	@JsonProperty("totalMinionsKilled")
 	private Integer nuTotalMinions;
 
 	@JsonProperty("goldEarned")
 	private Integer nuGoldEarned;
-	
+
 	@JsonProperty("totalDamageDealtToChampions")
 	private Long nuDamageDealt;
-	
+
+	@JsonProperty("largestCriticalStrike")
+	private Integer nuMaxCriticalStrike;
+
+	@JsonProperty("largestKillingSpree")
+	private Integer nuMaxKillingSpree;
+
+	@JsonProperty("timeCCingOthers")
+	private Long nuTimeCcGiven;
+
 	/*
 	 * GET AND SETS
 	 */
-	
+
 	public Integer getNuKills() {
 		return nuKills;
 	}
@@ -115,14 +121,6 @@ public class StatsDTO implements Serializable {
 		this.nuPentaKills = nuPentaKills;
 	}
 
-	public Integer getNuDmgDealt() {
-		return nuDmgDealt;
-	}
-
-	public void setNuDmgDealt(Integer nuDmgDealt) {
-		this.nuDmgDealt = nuDmgDealt;
-	}
-
 	public Integer getNuVisionScore() {
 		return nuVisionScore;
 	}
@@ -154,6 +152,29 @@ public class StatsDTO implements Serializable {
 	public void setNuDamageDealt(Long nuDamageDealt) {
 		this.nuDamageDealt = nuDamageDealt;
 	}
-	
-	
+
+	public Integer getNuMaxCriticalStrike() {
+		return nuMaxCriticalStrike;
+	}
+
+	public void setNuMaxCriticalStrike(Integer nuMaxCriticalStrike) {
+		this.nuMaxCriticalStrike = nuMaxCriticalStrike;
+	}
+
+	public Integer getNuMaxKillingSpree() {
+		return nuMaxKillingSpree;
+	}
+
+	public void setNuMaxKillingSpree(Integer nuMaxKillingSpree) {
+		this.nuMaxKillingSpree = nuMaxKillingSpree;
+	}
+
+	public Long getNuTimeCcGiven() {
+		return nuTimeCcGiven;
+	}
+
+	public void setNuTimeCcGiven(Long nuTimeCcGiven) {
+		this.nuTimeCcGiven = nuTimeCcGiven;
+	}
+
 }

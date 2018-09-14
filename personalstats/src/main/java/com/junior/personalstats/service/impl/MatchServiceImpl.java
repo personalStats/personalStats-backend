@@ -1,6 +1,7 @@
 package com.junior.personalstats.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bson.Document;
@@ -11,7 +12,10 @@ import org.springframework.data.mongodb.core.aggregation.GroupOperation;
 import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
 import org.springframework.stereotype.Service;
 
+import com.junior.personalstats.constants.TypeEnum;
 import com.junior.personalstats.model.Match;
+import com.junior.personalstats.model.dto.ChampionDTO;
+import com.junior.personalstats.model.dto.ChampionStatisticsDTO;
 import com.junior.personalstats.model.dto.GenericStatsDTO;
 import com.junior.personalstats.model.dto.HeaderStatisticsDTO;
 import com.junior.personalstats.repository.MatchRepository;
@@ -22,6 +26,9 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Accumulators;
+import com.mongodb.client.model.Aggregates;
+import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
 
 @Service
@@ -129,6 +136,11 @@ public class MatchServiceImpl extends MongoHandler implements MatchService {
 		}finally {
 			mongoClient.close();
 		}
+	}
+
+	@Override
+	public List<GenericStatsDTO> findMostDamagedGameByProfile(String cdProfile){
+		return null;
 	}
 
 
