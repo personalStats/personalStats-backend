@@ -1,5 +1,9 @@
+10 - Verificar porque algumas informacoes nao vieram. ver se realmente nao tem la na api(dados do match)
+9 - arrumar iswin
+
 1 - Jogar as coisas lá do controller para uma camada de serviço
 2 - Ajeitar a forma como eh recuperado os dados. Melhorar performance e fazer um circuit break
 5 - precisa guardar os dados da partida ( todos os players, champ, etc)
 6 - colocar listagem dos bans, pra ver qual heroi foi mais banido
 7 - ver se da pra pegar o tipóp do dragao
+

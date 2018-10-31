@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class GenericDragonDTO implements Serializable {
 
 	private long nuTotalDragons;
+	private long nuTotalGames;
 	private long nuGamesWithMorethen2Drags;
 	private double nuGamesWithMorethen2DragsPerc;
 	private long nuGamesWithMorethen2DragsAndWin;
@@ -75,8 +76,11 @@ public class GenericDragonDTO implements Serializable {
 	public void setNuDragonAvgPerGame(long nuDragonAvgPerGame) {
 		this.nuDragonAvgPerGame = nuDragonAvgPerGame;
 	}
-
-
-
+	public long getNuTotalGames() {
+		return nuTotalGames;
+	}
+	public void setNuTotalGames(long nuTotalGames) {
+		this.nuTotalGames = nuTotalGames;
+	}
 
 }
