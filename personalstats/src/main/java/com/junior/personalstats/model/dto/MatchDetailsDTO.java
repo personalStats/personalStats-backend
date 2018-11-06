@@ -21,7 +21,6 @@ public class MatchDetailsDTO {
 	private Integer nuSeason;
 	private String cdQueue;
 
-	@JsonProperty("win")
 	private boolean isWin;
 
 	private Integer nuChampion;

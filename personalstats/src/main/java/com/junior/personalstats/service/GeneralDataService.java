@@ -13,5 +13,7 @@ public interface GeneralDataService {
 	List<GeneralDataDTO> findLongerMatchs(ChampionService championService, String cdProfile);
 
 	List<GeneralDataDTO> findFasterMatchs(ChampionService championService, String cdProfile);
+
+	List<GeneralDataDTO> findMyPositionInRankedGreaterDamagePerMatch(ChampionService championService, String cdProfile, Long nuDmgDealtByMe);
 	
 }

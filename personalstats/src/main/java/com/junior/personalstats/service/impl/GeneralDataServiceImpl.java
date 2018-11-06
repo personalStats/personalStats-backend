@@ -2,9 +2,7 @@ package com.junior.personalstats.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.bson.Document;
 import org.springframework.stereotype.Service;
@@ -18,8 +16,11 @@ import com.junior.personalstats.util.MongoHandler;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import com.mongodb.client.model.Accumulators;
 import com.mongodb.client.model.Aggregates;
+import com.mongodb.client.model.Field;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Projections;
 import com.mongodb.client.model.Sorts;
 
 @Service
@@ -131,6 +132,32 @@ public class GeneralDataServiceImpl extends MongoHandler implements GeneralDataS
 		}
 		
 		return listGames;
+	}
+	
+	@Override
+	public List<GeneralDataDTO> findMyPositionInRankedGreaterDamagePerMatch(ChampionService championService, String cdProfile, Long nuDmgDealtByMe) {
+		List<GeneralDataDTO> listGames = new ArrayList<>();
+
+		MongoClient mongoClient = createMongoConnection();
+
+		MongoCollection<Document> collection = mongoClient.getDatabase("personalStats").getCollection("match");
+
+		MongoCursor<Document> iterator = collection
+				.aggregate(Arrays.asList(
+						Aggregates.project(Projections.fields(Projections.include("profile.deProfile", "nuChampion", "nuDmgDealt", "dtMatch", "isWin"))),
+                        Aggregates.group("$profile.deProfile", Accumulators.max("nuMaxDmgDealt", "$nuDmgDealt")),
+                        Aggregates.sort(Sorts.descending("nuMaxDmgDealt"))
+                        ))
+				.iterator();
+		
+		Integer nuPosition = 0;
+		while(iterator.hasNext()) {
+		     Document doc = iterator.next();
+		     ChampionDTO championDTO = championService.getChampionById(doc.getInteger("nuChampion"));
+		     listGames.add(new GeneralDataDTO(doc.getString("_id"), doc.getLong("nuMaxDmgDealt"), nuPosition++));
+		}
+		
+		return listGames; 
 	}
 
 }

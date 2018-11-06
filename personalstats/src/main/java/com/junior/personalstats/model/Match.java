@@ -52,41 +52,42 @@ public class Match {
 		this.nuChampion = matchDTO.getMatchDetailsDTO().getNuChampion();
 		this.dtMatch = matchDTO.getMatchDetailsDTO().getDtMatch();
 		this.nuSeason = matchDTO.getMatchDetailsDTO().getNuSeason();
-		this.isWin = matchDTO.getMatchDetailsDTO().isWin();
 		this.nuGameLength = matchDTO.getMatchDetailsDTO().getNuGameLength();
 
-		for (ParticipantDTO participantDTO : matchDTO.getMatchDetailsDTO().getParticipants()) {
-			if(participantDTO.getNuChampion() == nuChampion) {
-				this.nuKills = participantDTO.getStats().getNuKills();
-				this.nuDeaths = participantDTO.getStats().getNuDeaths();
-				this.nuAssists = participantDTO.getStats().getNuAssists();
-				this.nuDoubleKills = participantDTO.getStats().getNuDoubleKills();
-				this.nuTripleKills = participantDTO.getStats().getNuTripleKills();
-				this.nuQuadraKills = participantDTO.getStats().getNuQuadraKills();
-				this.nuPentaKills = participantDTO.getStats().getNuPentaKills();
-				this.nuDmgDealt = participantDTO.getStats().getNuDamageDealt();
-				this.nuVisionScore = participantDTO.getStats().getNuVisionScore();
-				this.nuTotalMinions = participantDTO.getStats().getNuTotalMinions();
-				this.nuTeam = participantDTO.getNuTeam();
-				this.nuGoldEarned = participantDTO.getStats().getNuGoldEarned();
-				this.nuParticipant = participantDTO.getNuParticipant();
-				this.nuMaxCriticalStrike = participantDTO.getStats().getNuMaxCriticalStrike();
-				this.nuMaxKillingSpree = participantDTO.getStats().getNuMaxKillingSpree();
-				this.nuTimeCcGiven = participantDTO.getStats().getNuTimeCcGiven();
-
-			}
-		}
-		for (TeamDTO teamDTO : matchDTO.getMatchDetailsDTO().getTeams()) {
-			if(teamDTO.getIdTeam() == this.nuTeam) {
-				this.isFirstDragon = teamDTO.isFirstDragon();
-				this.isFirstKill = teamDTO.isFirstKill();
-				this.isFirstTower = teamDTO.isFirstTower();
-				this.nuDragons = teamDTO.getNuDragonKills();
-			}
-		}
+		mountParticipantData(matchDTO);
+		mountTeamData(matchDTO);
 
 		return this;
+	}
 
+
+	private void mountParticipantData(MatchDTO matchDTO) {
+		ParticipantDTO participantDTO = matchDTO.getMatchDetailsDTO().getParticipants().stream().filter(pa -> pa.getNuChampion().equals(nuChampion)).findFirst().get();
+		this.nuKills = participantDTO.getStats().getNuKills();
+		this.nuDeaths = participantDTO.getStats().getNuDeaths();
+		this.nuAssists = participantDTO.getStats().getNuAssists();
+		this.nuDoubleKills = participantDTO.getStats().getNuDoubleKills();
+		this.nuTripleKills = participantDTO.getStats().getNuTripleKills();
+		this.nuQuadraKills = participantDTO.getStats().getNuQuadraKills();
+		this.nuPentaKills = participantDTO.getStats().getNuPentaKills();
+		this.nuDmgDealt = participantDTO.getStats().getNuDamageDealt();
+		this.nuVisionScore = participantDTO.getStats().getNuVisionScore();
+		this.nuTotalMinions = participantDTO.getStats().getNuTotalMinions();
+		this.nuTeam = participantDTO.getNuTeam();
+		this.nuGoldEarned = participantDTO.getStats().getNuGoldEarned();
+		this.nuParticipant = participantDTO.getNuParticipant();
+		this.nuMaxCriticalStrike = participantDTO.getStats().getNuMaxCriticalStrike();
+		this.nuMaxKillingSpree = participantDTO.getStats().getNuMaxKillingSpree();
+		this.nuTimeCcGiven = participantDTO.getStats().getNuTimeCcGiven();
+	}
+	
+	private void mountTeamData(MatchDTO matchDTO) {
+		TeamDTO teamDTO = matchDTO.getMatchDetailsDTO().getTeams().stream().filter(t -> t.getIdTeam().equals(this.nuTeam)).findFirst().get();
+		this.isFirstDragon = teamDTO.isFirstDragon();
+		this.isFirstKill = teamDTO.isFirstKill();
+		this.isFirstTower = teamDTO.isFirstTower();
+		this.nuDragons = teamDTO.getNuDragonKills();
+		this.isWin = "Win".equals(teamDTO.isWin());
 	}
 
 	/*

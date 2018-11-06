@@ -72,7 +72,7 @@ public class MatchController {
 		List<Match> matchListConverted = new ArrayList<>();
 		ObjectMapper mapper = new ObjectMapper();
 
-		String urlListaMatch = String.format("https://br1.api.riotgames.com/lol/match/v3/matchlists/by-account/%s?beginIndex=1&season=11&api_key=%s",profile.getNuAccount(),nuKey);
+		String urlListaMatch = String.format("https://br1.api.riotgames.com/lol/match/v3/matchlists/by-account/%s?beginIndex=1&queue=420&season=11&api_key=%s",profile.getNuAccount(),nuKey);
 		MatchDTO matchResponse = new RestTemplate().getForObject(urlListaMatch, MatchDTO.class);
 		for (MatchReferenceDTO referenceDTO : matchResponse.getMatchReferences()) {
 			MatchDTO matchDTO = new MatchDTO();

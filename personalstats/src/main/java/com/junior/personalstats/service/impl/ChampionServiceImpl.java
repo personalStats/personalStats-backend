@@ -29,7 +29,7 @@ public class ChampionServiceImpl implements ChampionService{
     public void putAllChampionsOnCache() {
 
 		//TODO JUNIOR TROCAR PELA RIOT API
-		String url = "https://api.myjson.com/bins/1hkab8";
+		String url = "http://ddragon.leagueoflegends.com/cdn/8.17.1/data/en_US/champion.json";
 
 		ObjectNode objectNode = new RestTemplate().getForObject(url, ObjectNode.class);
 		JsonNode highDepth = objectNode.get("data");

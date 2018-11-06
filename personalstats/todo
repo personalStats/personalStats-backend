@@ -1,5 +1,6 @@
 10 - Verificar porque algumas informacoes nao vieram. ver se realmente nao tem la na api(dados do match)
-9 - arrumar iswin
+11-  no front end, arrumar o versionid dos static data
+12 - estatisticas wardsKilled
 
 1 - Jogar as coisas lá do controller para uma camada de serviço
 2 - Ajeitar a forma como eh recuperado os dados. Melhorar performance e fazer um circuit break

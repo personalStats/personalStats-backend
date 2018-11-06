@@ -11,6 +11,8 @@ public class GeneralDataDTO {
 	private boolean isWin;
 	private Long nuDmgDealt;
 	private Integer nuGameLength;
+	private Integer nuPosition;
+	private String nmProfile;
 	
 	public GeneralDataDTO(Integer nuGameId, ChampionDTO champion, Integer nuCriticalStrike, Date dtMatch, boolean isWin, Long nuDmgDealt, Integer nuGameLenth) {
 		super();
@@ -21,6 +23,12 @@ public class GeneralDataDTO {
 		this.isWin = isWin;
 		this.nuDmgDealt = nuDmgDealt;
 		this.nuGameLength = nuGameLenth;
+	}
+	
+	public GeneralDataDTO(String nmProfile, Long nuDmgDealt, Integer nuPosition) {
+		this.nmProfile = nmProfile;
+		this.nuDmgDealt = nuDmgDealt;
+		this.nuPosition = nuPosition;
 	}
 	
 	public void reset() {
@@ -86,6 +94,23 @@ public class GeneralDataDTO {
 	public void setNuGameId(Integer nuGameId) {
 		this.nuGameId = nuGameId;
 	}
+
+	public Integer getNuPosition() {
+		return nuPosition;
+	}
+
+	public void setNuPosition(Integer nuPosition) {
+		this.nuPosition = nuPosition;
+	}
+
+	public String getNmProfile() {
+		return nmProfile;
+	}
+
+	public void setNmProfile(String nmProfile) {
+		this.nmProfile = nmProfile;
+	}
+	
 	
 	
 }
